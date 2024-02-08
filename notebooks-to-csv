@@ -1,0 +1,25 @@
+below code will save the csv file in notebook local folder,
+
+%config PPMagics.domain = ''
+%config PPMagics.autolimit=0
+%config PPMagics.displaylimit=0
+
+
+import pandas as pd
+
+pd.set_option("display.max_rows", None)
+pd.set_option("display.max_columns", None)
+pd.set_option("display.max_rows", None)
+
+qury = "select distinct id from where date(datetime_created) = '2018-02-02'"
+
+df = %ppbq $qury
+
+df.to_csv('/home/kasss/raw.csv')
+
+
+%dropzone -p -f -src raw.csv -tgt raw.csv
+
+%%ppbq -d True
+
+select distinct id from where date(datetime_created) = '2018-02-02';

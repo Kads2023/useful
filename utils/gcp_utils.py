@@ -288,37 +288,6 @@ def bq_table_add_columns(bq_client, bq_table_name, columns_to_add):
         raise RuntimeError("Failed to update table schema")
 
 
-def get_bq_job_labels(edlxp_name, label, target_table, dataset, end_run_id, last_ingestion_utc_time,
-                      km_app_name, km_credential_json, run_no=None):
-    short_table_name = [word[:2] for word in target_table.split('_')]
-    short_table_name = ''.join(short_table_name).replace("_", "").lower()
-    short_table_name_new = [word[:1] for word in target_table.split('_')]
-    short_table_name_new = ''.join(short_table_name_new).replace("_", "").lower()
-    if not run_no:
-        run_no = 1
-    ret_val = {
-        "job-instance-id": "%s-%s-%s-%s-%s" % (edlxp_name.lower(), label[0].lower(),
-                                               short_table_name_new, end_run_id[2:], run_no),
-        "table_name": "%s-%s" % (edlxp_name.lower(), target_table.lower()),
-        "property": "%s" % edlxp_name.lower(),
-        "task": "%s-%s" % (edlxp_name.lower(), label.lower()),
-        "dataset": "%s-%s" % (edlxp_name.lower(), dataset.lower()),
-        "pp-edp-resource-name": "%s-%s-%s" % (edlxp_name.lower(), dataset.lower(), short_table_name),
-        "pp-edp-custom-billing-tag": "%s-%s-%s-%s" % (edlxp_name.lower(), label.lower(),
-                                                      short_table_name, end_run_id[2:]),
-        "pp-edp-job-run-id": "%s-%s-%s-%s-%s" % (edlxp_name.lower(), label[0].lower(),
-                                                 short_table_name_new, end_run_id[2:], run_no),
-        "ingestion-time": "%s-%s" % (edlxp_name.lower(), last_ingestion_utc_time.strftime('%Y%m%d%H%M%S')),
-        "pp-edp-platform": "non-opiniated",
-        "pp-edp-business-unit": "edp-big-data-platform-engineering",
-        "pp-edp-org-unit": "enterprise-data-solutions",
-        "pp-edp-app-id": km_app_name,
-        "pp-edp-app-name": km_app_name,
-        "pp-edp-gcp-uid": km_credential_json
-    }
-    print(f"inside get_bq_job_labels, ret_val --> {ret_val}")
-    return ret_val
-
 
 def get_job_level_stats(query, query_stats_json, stat_params, job_id):
     # Get on job level

@@ -107,3 +107,63 @@ for blob in gcs_bucket.list_blobs \
 
 
 
+for blob in gcs_bucket.list_blobs(prefix='history/{target_table}/data/{target_table}_20201231/'):
+    source_bucket = gcs_client.bucket(gcs_bucket_name)
+    source_blob = blob
+    destination_bucket = gcs_client.bucket(gcs_bucket_name)
+    destination_blob_name = blob.name.replace(f"history/{target_table}/", f"history/hive/{target_table}/")
+    print(destination_blob_name)
+    blob_copy = source_bucket.copy_blob(
+        source_blob, destination_bucket, destination_blob_name
+    )
+    print("Blob {} in bucket {} moved to blob {} in bucket {}.".format(source_blob.name,  source_bucket.name,blob_copy.name,destination_bucket.name))
+
+
+
+for blob in gcs_bucket.list_blobs(prefix=f'history/{target_table}/data/{target_table}_20210131/'):
+    print(blob)
+
+for blob in gcs_bucket.list_blobs(prefix=f'history/{target_table}/data/{target_table}_20210131/'):
+    source_bucket = gcs_client.bucket(gcs_bucket_name)
+    source_blob = blob
+    destination_bucket = gcs_client.bucket(gcs_bucket_name)
+    destination_blob_name = blob.name.replace(f"history/{target_table}/", f"history/hive/{target_table}/")
+    print(destination_blob_name)
+    blob_copy = source_bucket.copy_blob(
+        source_blob, destination_bucket, destination_blob_name
+    )
+    print("Blob {} in bucket {} moved to blob {} in bucket {}.".format(source_blob.name,  source_bucket.name,blob_copy.name,destination_bucket.name))
+
+for blob in gcs_bucket.list_blobs(prefix=f'history/hive/{target_table}/data/{target_table}_20210131/'):
+    print(blob)
+
+
+blob_iter = gcs_bucket.list_blobs(prefix=f'history/{target_table}/data/')
+
+
+prefix_list = []
+for each in blob_iter:
+   print(each)
+   blob_name = str(each.name)
+   if "payment_source_" in blob_name and blob_name.endswith('/'):
+       print("need to move directory")
+       prefix_list.append(blob_name)
+
+
+
+
+
+for each_prefix in prefix_list:
+    for blob in gcs_bucket.list_blobs(prefix=each_prefix):
+        source_bucket = gcs_client.bucket(gcs_bucket_name)
+        source_blob = blob
+        destination_bucket = gcs_client.bucket(gcs_bucket_name)
+        destination_blob_name = blob.name.replace(f"history/{target_table}/", f"history/hive/{target_table}/")
+        print(destination_blob_name)
+        blob_copy = source_bucket.copy_blob(
+            source_blob, destination_bucket, destination_blob_name
+        )
+        print("Blob {} in bucket {} moved to blob {} in bucket {}.".format(source_blob.name,  source_bucket.name,blob_copy.name,destination_bucket.name))
+        source_bucket.delete_blob(source_blob.name)
+
+

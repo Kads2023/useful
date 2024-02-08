@@ -1,0 +1,32 @@
+{
+    ".log": {
+        "directories":[],
+        "recursive_directories":["/logs"],
+        "retention_days":10
+    },
+    "_dly.txt": {
+        "directories":[
+            "/landing",
+            "/archive",
+            "/not_processed"
+        ],
+        "recursive_directories":[
+            "/test_files"
+        ],
+        "retention_days":10
+    },
+    "_success.txt": {
+        "directories": [
+            "/success_files"
+        ],
+        "recursive_directories": [],
+        "retention_days": 20
+    },
+    "_failed.txt": {
+        "directories": [
+            "/failed_files"
+        ],
+        "recursive_directories": [],
+        "retention_days": 20
+    }
+}
